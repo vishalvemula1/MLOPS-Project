@@ -84,6 +84,13 @@ jobs:
       - name: Smoke test – health endpoint
         run: |
           docker run -d --name api -p 8000:8000 skin-cancer-api:ci
-          sleep 5
+          for i in {1..12}; do
+            if curl -s -f http://localhost:8000/health; then
+              echo "Health check succeeded!"
+              break
+            fi
+            echo "Waiting for API to start ($i/12)..."
+            sleep 2
+          done
           curl --fail http://localhost:8000/health
           docker stop api && docker rm api

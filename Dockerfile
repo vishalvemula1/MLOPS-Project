@@ -9,11 +9,12 @@ WORKDIR /app
 
 # Install Python deps first (layer cache)
 COPY requirements-api.txt .
-RUN pip install --no-cache-dir -r requirements-api.txt
+RUN pip install --no-cache-dir torch torchvision --index-url https://download.pytorch.org/whl/cpu && \
+    pip install --no-cache-dir -r requirements-api.txt
 
 # Copy application code
 COPY app/ ./app/
-COPY models/model_weights.pth ./models/model_weights.pth 2>/dev/null || true
+RUN mkdir -p ./models
 
 # Expose and run
 EXPOSE 8000
