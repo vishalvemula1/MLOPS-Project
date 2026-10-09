@@ -1,8 +1,66 @@
 # 🔬 End-to-End Skin Cancer Classification Pipeline
 
-[![Python](https://img.shields.io/badge/Python-3.8%2B-blue?logo=python&logoColor=white)](https://www.python.org/)
+[![Python](https://img.shields.io/badge/Python-3.12-blue?logo=python&logoColor=white)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.111+-green?logo=fastapi)](https://fastapi.tiangolo.com/)
+[![CI](https://github.com/vishalvemula1/skin-cancer/actions/workflows/ci.yml/badge.svg)](https://github.com/vishalvemula1/skin-cancer/actions)
 [![Deep Learning](https://img.shields.io/badge/Domain-Computer%20Vision-red)](https://github.com)
-[![Status](https://img.shields.io/badge/Status-Completed-success)]()
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+---
+
+## 🚀 FastAPI Backend & Skin Cancer Detection API
+
+The project now ships with a **production-ready FastAPI backend** for real-time skin lesion classification.
+
+### Quickstart (API)
+
+```bash
+# 1. Create & activate venv
+python -m venv venv
+venv\Scripts\activate          # Windows
+# source venv/bin/activate     # macOS / Linux
+
+# 2. Install torch (CPU or GPU)
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu  # CPU-only
+# pip install torch torchvision   # GPU
+
+# 3. Install API dependencies
+pip install -r requirements-api.txt
+
+# 4. (Optional) put your trained weights at models/model_weights.pth
+#    The API will start even without weights (predictions will be random)
+
+# 5. Run the server
+uvicorn app.main:app --reload
+# Open http://127.0.0.1:8000
+```
+
+### API Endpoints
+
+| Method | Path | Description |
+|--------|------|-------------|
+| `GET` | `/` | Browser-friendly drag-and-drop UI |
+| `GET` | `/health` | Liveness check |
+| `POST` | `/predict` | Upload an image → get prediction |
+| `GET` | `/docs` | Interactive Swagger UI |
+
+### Running Tests
+
+```bash
+# (after installing torch + requirements-api.txt)
+pytest tests/ -v --cov=app
+```
+
+### CI/CD (GitHub Actions)
+
+Three-stage pipeline defined in [`.github/workflows/ci.yml`](.github/workflows/ci.yml):
+
+1. **Lint** – `ruff` checks all Python files
+2. **Test** – `pytest` with coverage, using CPU-only torch wheel
+3. **Docker Build** – Builds the image and hits `/health` as a smoke test
+
+---
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 > **TL;DR:** An end-to-end Deep Learning system for automated skin lesion analysis and classification from dermatoscopic imagery. Built to tackle real-world medical imaging challenges including severe class imbalance, high inter-class visual similarity, and clinical evaluation sensitivity.
